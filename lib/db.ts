@@ -10,38 +10,50 @@
 
 import { MongoClient, Db } from 'mongodb';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your MONGODB_URI to .env');
-}
-
-const uri = process.env.MONGODB_URI;
 const options = {};
 
 let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+let clientPromise: Promise<MongoClient> | null = null;
 
 declare global {
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-if (process.env.NODE_ENV === 'development') {
-  // In development mode, use a global variable to preserve the client across hot reloads
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect();
+function getMongoClient(): Promise<MongoClient> {
+  const uri = process.env.MONGODB_URI;
+  
+  if (!uri) {
+    throw new Error('Please add your MONGODB_URI to .env');
   }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production mode, create a new client
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+
+  if (process.env.NODE_ENV === 'development') {
+    // In development mode, use a global variable to preserve the client across hot reloads
+    if (!global._mongoClientPromise) {
+      client = new MongoClient(uri, options);
+      global._mongoClientPromise = client.connect();
+    }
+    return global._mongoClientPromise;
+  } else {
+    // In production mode, create a new client
+    client = new MongoClient(uri, options);
+    return client.connect();
+  }
 }
 
-export default clientPromise;
+// Lazy getter - only initialize when accessed
+function getClientPromise(): Promise<MongoClient> {
+  if (!clientPromise) {
+    clientPromise = getMongoClient();
+  }
+  return clientPromise;
+}
+
+// Don't export default - it's not used anywhere
+// If needed in the future, export as: export default getClientPromise;
 
 // Helper to get database
 export async function getDb(): Promise<Db> {
-  const client = await clientPromise;
+  const client = await getClientPromise();
   return client.db();
 }
 
