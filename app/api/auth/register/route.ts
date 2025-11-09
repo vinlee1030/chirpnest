@@ -75,10 +75,27 @@ export async function POST(request: NextRequest) {
       userID,
       registrationToken,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error);
+    
+    // Provide more specific error messages
+    let errorMessage = 'Internal server error';
+    
+    if (error.message?.includes('MONGODB_URI')) {
+      errorMessage = 'Database connection not configured. Please check MONGODB_URI environment variable.';
+    } else if (error.message?.includes('authentication failed')) {
+      errorMessage = 'Database authentication failed. Please check your MongoDB credentials.';
+    } else if (error.message?.includes('timeout') || error.message?.includes('ECONNREFUSED')) {
+      errorMessage = 'Cannot connect to database. Please check your MongoDB connection string and network settings.';
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
   }

@@ -53,8 +53,22 @@ function getClientPromise(): Promise<MongoClient> {
 
 // Helper to get database
 export async function getDb(): Promise<Db> {
-  const client = await getClientPromise();
-  return client.db();
+  try {
+    const client = await getClientPromise();
+    return client.db();
+  } catch (error: any) {
+    // Provide more helpful error messages
+    if (error.message?.includes('MONGODB_URI')) {
+      throw new Error('MONGODB_URI environment variable is not set. Please add it to your Vercel environment variables.');
+    }
+    if (error.message?.includes('authentication failed')) {
+      throw new Error('MongoDB authentication failed. Please check your username and password in MONGODB_URI.');
+    }
+    if (error.message?.includes('timeout') || error.message?.includes('ECONNREFUSED')) {
+      throw new Error('Cannot connect to MongoDB. Please check: 1) Your connection string is correct, 2) MongoDB Atlas Network Access allows all IPs (0.0.0.0/0), 3) Your cluster is running.');
+    }
+    throw error;
+  }
 }
 
 // Collection names
