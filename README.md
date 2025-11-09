@@ -1,178 +1,145 @@
 # ChirpNest 🐦
 
-A Twitter/X-like social media platform built with Next.js, NextAuth, MongoDB, and Pusher.
+一個類似 Twitter/X 的社交媒體平台，使用 Next.js、NextAuth、MongoDB 和 Pusher 構建。
 
-## 🚀 Deployed Link
+## 🚀 部署連結
 
-**Live Demo:** [YOUR_VERCEL_URL_HERE]
+**線上演示：** [https://chirpnest.vercel.app](https://chirpnest.vercel.app)
 
-## 🔑 Registration Key
+> ⚠️ **重要提醒：** 
+> - 如果您要部署自己的版本，請務必在 **Google OAuth** 和 **GitHub OAuth** 設定中添加您的部署連結
+> - 詳細步驟見下方「部署到 Vercel」→「步驟 3：更新 OAuth 重新導向 URI」
+> - 這是**必須執行的步驟**，否則 OAuth 登入會失敗！
 
-**Important:** To register a new account, you need a registration key.
+---
 
-**Registration Key:** `chirpnest2024`
+## 🔑 註冊金鑰（REG_KEY）
 
-> 💡 **Note:** The registration key can be found in this README file. You'll need to enter it when registering a new account.
+為了防止任意路人註冊，本應用使用了註冊金鑰保護機制。
 
-## 📝 Registration & Login
+**註冊金鑰：** `chirpnest2024`
 
-### Registration Process
+> 💡 **提示：** 註冊新帳號時，您需要在註冊頁面輸入此金鑰。此金鑰也寫在環境變數 `REG_KEY` 中。
 
-**Step-by-step guide:**
+---
 
-1. **Visit the login page** at `http://localhost:3000` (or your deployed URL)
-2. **Click "Register here"** at the bottom of the login form
-3. **Enter your desired UserID:**
-   - Must be 3-15 characters
-   - Only lowercase letters, numbers, and underscores
-   - Example: `john_doe`, `user123`, `test_user`
-4. **Enter the Registration Key:**
-   - Find it in this README (see above)
-   - Enter: `chirpnest2024`
-5. **Choose a provider** (Google or GitHub) to bind with your UserID
-   - This provider will be permanently linked to your UserID
-   - You cannot use a different provider with the same UserID later
-6. **Complete OAuth authentication** with your chosen provider
-7. **Done!** You'll be redirected to the home page
+## ✨ 功能清單
 
-**Important Security Notes:**
-- Each UserID can only be bound to ONE provider (either Google OR GitHub)
-- Once a UserID is bound to a provider, no one else can use that UserID with a different provider
-- If you try to register with a UserID that's already taken, you'll get an error
-- The registration key prevents unauthorized account creation
+### 核心功能
 
-### Login Process
+- ✅ **用戶認證系統**
+  - Google OAuth 登入
+  - GitHub OAuth 登入
+  - 註冊金鑰保護機制
+  - UserID 與 OAuth 提供者永久綁定（一個 UserID 只能綁定一個提供者）
 
-**Step-by-step guide:**
+- ✅ **發文系統**
+  - 智能字數計算（URL 算 23 字元，Hashtag 和 Mention 不計入）
+  - 支援最多 4 張圖片上傳（使用 Cloudinary）
+  - **YouTube 影片嵌入** - 貼上 YouTube 連結自動轉換為影片播放器
+  - Hashtag 和 Mention 支援（@username, #hashtag）
+  - 草稿自動儲存功能
 
-1. **Visit the login page**
-2. **Enter your UserID** (the one you chose during registration)
-3. **Click "Login"**
-4. **System automatically detects** which provider (Google/GitHub) you used during registration
-5. **You'll be redirected** to that provider's OAuth page
-6. **Complete OAuth authentication**
-7. **Done!** You'll be logged in and redirected to the home page
+- ✅ **互動功能**
+  - **表情符號反應** - 6 種不同的表情反應（👍 Like, ❤️ Love, 😂 Haha, 😮 Wow, 😢 Sad, 😠 Angry）
+  - 按讚、回覆、轉發
+  - 即時更新（使用 Pusher）
+  - 書籤功能
+  - 通知系統（即時通知動畫）
 
-**Note:** You must use the same provider (Google or GitHub) that you used during registration. The system will automatically redirect you to the correct provider.
+- ✅ **用戶系統**
+  - 個人資料頁面（可自訂頭像、橫幅、顯示名稱、個人簡介）
+  - 追蹤/取消追蹤功能
+  - 個人資料編輯功能
+  - 發文數統計
 
-## ✨ Features
+- ✅ **其他功能**
+  - 深色/淺色主題切換
+  - 搜尋功能（搜尋用戶和發文）
+  - 首頁動態（全部/追蹤中）
+  - 個人資料標籤（發文/按讚）
+  - 巢狀回覆系統
 
-- ✅ User authentication with Google & GitHub OAuth (with registration key protection)
-- ✅ Create posts with smart character counting (URLs count as 23 chars, hashtags/mentions don't count)
-- ✅ Upload images to posts (up to 4 images via Cloudinary)
-- ✅ **Embed YouTube videos** - Paste a YouTube URL and it automatically becomes an embedded video player
-- ✅ **Emoji reactions** - Like posts with 6 different emoji reactions (Like, Love, Haha, Wow, Sad, Angry)
-- ✅ Like, reply, and repost functionality
-- ✅ Real-time updates with Pusher
-- ✅ User profiles with customizable bio, avatar, and banner
-- ✅ Follow/unfollow system
-- ✅ Draft saving system
-- ✅ Home feed with "All" and "Following" tabs
-- ✅ Profile tabs (Posts/Likes)
-- ✅ Nested comments with recursive routing
-- ✅ Bookmarks and Notifications
-- ✅ Search functionality
-- ✅ Dark mode support
+---
 
-## 📋 Requirements Checklist
+## 🏗️ 系統架構圖
 
-### Core Features (MVP)
-- [x] **Login/Register**
-  - [x] UserID validation (3-15 chars, lowercase, numbers, underscores)
-  - [x] Google OAuth
-  - [x] GitHub OAuth
-  - [x] Registration key protection
-  - [x] Automatic session management
-  
-- [x] **Sidebar Navigation**
-  - [x] Home, Profile, Post buttons
-  - [x] User menu with logout
-  
-- [x] **Profile Pages**
-  - [x] Banner, avatar, display name, bio
-  - [x] Following/followers count
-  - [x] Edit profile modal (own profile)
-  - [x] Follow/Following button (others' profiles)
-  - [x] Posts and Likes tabs (Likes only visible to self)
-  
-- [x] **Posting**
-  - [x] Character limit: 280 (URLs count as 23)
-  - [x] Hashtags and mentions don't count toward limit
-  - [x] Auto-link URLs
-  - [x] Highlight hashtags and mentions
-  - [x] Draft save/discard on modal close
-  - [x] Drafts list accessible from modal
-  - [x] Inline composer on home page
-  
-- [x] **Feed**
-  - [x] "All" and "Following" tabs
-  - [x] Time-sorted posts (newest first)
-  - [x] Like, reply, repost actions
-  - [x] Delete own posts (not reposts)
-  
-- [x] **Post Details**
-  - [x] View post with replies
-  - [x] Nested comment routing
-  - [x] Reply composer
-  - [x] Back navigation
-  
-- [x] **Real-time Updates (Pusher)**
-  - [x] Like count updates in real-time
-  - [x] Reply count updates in real-time
-  - [x] Repost count updates in real-time
-  
-- [x] **Deployment**
-  - [x] Vercel-ready configuration
-  - [x] Environment variables documented
-  - [x] README with setup instructions
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        前端 (Frontend)                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
+│  │ Next.js  │  │ React    │  │ Tailwind │  │ TypeScript│   │
+│  │ App      │  │ 18.3     │  │ CSS      │  │          │   │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    API 路由層 (API Routes)                    │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │ NextAuth     │  │ RESTful API  │  │ File Upload  │      │
+│  │ (OAuth)      │  │ Routes       │  │ (Cloudinary) │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│  MongoDB     │  │  Pusher      │  │  Cloudinary  │
+│  Atlas       │  │  Channels    │  │  (Images)    │
+│  (Database)  │  │  (Real-time) │  │              │
+└──────────────┘  └──────────────┘  └──────────────┘
+```
 
-## 🛠️ Tech Stack
+### 技術架構說明
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** TailwindCSS
-- **Authentication:** NextAuth.js
-- **Database:** MongoDB Atlas
-- **Real-time:** Pusher Channels
-- **Deployment:** Vercel
+- **前端框架：** Next.js 14 (App Router) + React 18
+- **樣式：** TailwindCSS + 自訂動畫
+- **認證：** NextAuth.js (Google/GitHub OAuth)
+- **資料庫：** MongoDB Atlas
+- **即時通訊：** Pusher Channels
+- **圖片上傳：** Cloudinary
+- **部署：** Vercel
 
-## 📦 Installation
+---
 
-### Prerequisites
+## 📦 安裝與設定
 
-- Node.js 18+ and npm/pnpm/yarn
-- MongoDB Atlas account
-- Google Cloud Console account (for OAuth)
-- GitHub account (for OAuth)
-- Pusher account
+### 前置需求
 
-### 1. Clone and Install
+- Node.js 18+ 
+- npm 或 yarn
+- MongoDB Atlas 帳號
+- Google Cloud Console 帳號（用於 OAuth）
+- GitHub 帳號（用於 OAuth）
+- Pusher 帳號（用於即時更新）
+- Cloudinary 帳號（用於圖片上傳）
+
+---
+
+### 步驟 1：克隆專案
 
 ```bash
-cd "My Hw5"
+git clone <your-repo-url>
+cd wp1141/hw5
+```
+
+### 步驟 2：安裝依賴
+
+```bash
 npm install
-# or
-pnpm install
 ```
 
-### 2. Environment Variables
+### 步驟 3：設定環境變數
 
-Create a `.env` file in the project root (same directory as `package.json`):
-
-```bash
-# Copy the template (if it exists)
-cp .env.example .env
-# Or create a new .env file
-```
-
-Then edit `.env` with your actual credentials. Here's a complete template:
+在專案根目錄創建 `.env` 文件：
 
 ```env
-# NextAuth Configuration
+# NextAuth 設定
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your_generated_secret_here
 
-# Registration Key (change this for production!)
+# 註冊金鑰
 REG_KEY=chirpnest2024
 
 # Google OAuth
@@ -192,937 +159,601 @@ PUSHER_KEY=your_pusher_key
 PUSHER_SECRET=your_pusher_secret
 PUSHER_CLUSTER=ap3
 
-# Cloudinary (for image uploads)
+# Cloudinary
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-**Important:** 
-- Change `REG_KEY` to a secure random string for production
-- Never commit your `.env` file to version control
-- All values marked with `your_*` need to be replaced with actual credentials (see setup guide below)
-
-### 3. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 🔐 Third-Party Services Setup
-
-### 1. Google OAuth
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Navigate to **APIs & Services** → **Credentials**
-4. Click **Create Credentials** → **OAuth Client ID**
-5. Select **Web application**
-6. Add **Authorized redirect URIs**:
-   - `http://localhost:3000/api/auth/callback/google`
-   - `https://YOUR_VERCEL_DOMAIN.vercel.app/api/auth/callback/google`
-7. Copy the **Client ID** and **Client Secret**
-8. Paste them in your `.env` file:
-   ```
-   GOOGLE_CLIENT_ID=your_client_id_here
-   GOOGLE_CLIENT_SECRET=your_client_secret_here
-   ```
-
-### 2. GitHub OAuth
-
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click **New OAuth App**
-3. Fill in the form:
-   - **Application name:** ChirpNest (or your choice)
-   - **Homepage URL:** `http://localhost:3000` (or your domain)
-   - **Authorization callback URL:**
-     - For local: `http://localhost:3000/api/auth/callback/github`
-     - For production: `https://YOUR_VERCEL_DOMAIN.vercel.app/api/auth/callback/github`
-4. Click **Register application**
-5. Copy the **Client ID**
-6. Click **Generate a new client secret** and copy it
-7. Paste them in your `.env` file:
-   ```
-   GITHUB_ID=your_github_client_id
-   GITHUB_SECRET=your_github_client_secret
-   ```
-
-### 3. MongoDB Atlas
-
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Sign up or log in
-3. Create a **New Project**
-4. Create a **Cluster** (Free tier M0 is fine)
-5. Under **Security**:
-   - **Database Access:** Add a database user with username and password
-   - **Network Access:** Add IP Address → **Allow access from anywhere** (`0.0.0.0/0`)
-     - For production, you can restrict to Vercel IPs
-6. Click **Connect** on your cluster
-7. Choose **Connect your application**
-8. Copy the connection string (looks like `mongodb+srv://...`)
-9. Replace `<password>` with your database user's password
-10. Replace `<dbname>` with your database name (e.g., `chirpnest`)
-11. Paste it in your `.env` file:
-    ```
-    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/chirpnest?retryWrites=true&w=majority
-    ```
-
-### 4. Pusher Channels
-
-1. Go to [Pusher](https://pusher.com/)
-2. Sign up or log in
-3. Create a **new Channels app**
-4. Choose a cluster close to your target audience (e.g., `ap3` for Asia-Pacific)
-5. Go to **App Keys** tab
-6. Copy the following values:
-   - `app_id`
-   - `key`
-   - `secret`
-   - `cluster`
-7. Paste them in your `.env` file:
-   ```
-   PUSHER_APP_ID=your_app_id
-   PUSHER_KEY=your_key
-   PUSHER_SECRET=your_secret
-   PUSHER_CLUSTER=ap3
-   ```
-
-### 5. NextAuth Secret
-
-Generate a secure random string for NextAuth:
+### 步驟 4：生成 NEXTAUTH_SECRET
 
 ```bash
 openssl rand -base64 32
 ```
 
-Or use an online generator: https://generate-secret.vercel.app/32
-
-Paste the output in your `.env` file:
-
-```
-NEXTAUTH_SECRET=your_generated_secret_here
-```
-
-### 6. Registration Key
-
-Set a registration key to control who can create accounts. This prevents unauthorized registrations.
-
-For development/testing, you can use:
-```
-REG_KEY=chirpnest2024
-```
-
-**For production:** Generate a secure random string and update it in your `.env` file. Also update the README with the new key for authorized users.
-
-**Security Note:** The registration key should be:
-- At least 16 characters long
-- A mix of letters, numbers, and special characters
-- Kept secret and only shared with authorized users
-
-### 7. NextAuth URL
-
-For local development:
-```
-NEXTAUTH_URL=http://localhost:3000
-```
-
-For production (after deploying to Vercel):
-```
-NEXTAUTH_URL=https://your-vercel-domain.vercel.app
-```
-
-### 8. Cloudinary (Image Upload)
-
-For image upload functionality, you need Cloudinary credentials.
-
-See [CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md) for detailed instructions.
-
-```
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-```
-
-## 📁 Project Structure
-
-```
-My Hw5/
-├── app/
-│   ├── (auth)/
-│   │   ├── login/page.tsx          # Login and registration page
-│   │   └── layout.tsx
-│   ├── (main)/
-│   │   ├── home/page.tsx           # Home feed
-│   │   ├── profile/
-│   │   │   ├── page.tsx            # Redirect to own profile
-│   │   │   └── [userID]/page.tsx  # User profile page
-│   │   ├── post/[id]/page.tsx      # Post detail with replies
-│   │   └── layout.tsx              # Main layout with sidebar
-│   ├── api/
-│   │   ├── auth/
-│   │   │   ├── [...nextauth]/route.ts
-│   │   │   └── register/route.ts
-│   │   ├── users/
-│   │   │   ├── [userID]/route.ts
-│   │   │   └── me/route.ts
-│   │   ├── posts/
-│   │   │   ├── route.ts
-│   │   │   └── [id]/
-│   │   │       ├── route.ts
-│   │   │       ├── like/route.ts
-│   │   │       ├── repost/route.ts
-│   │   │       └── reply/route.ts
-│   │   ├── follow/[userID]/route.ts
-│   │   └── me/
-│   │       ├── drafts/
-│   │       │   ├── route.ts
-│   │       │   └── [id]/route.ts
-│   │       └── likes/route.ts
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── providers.tsx
-├── components/
-│   ├── Avatar.tsx
-│   ├── EditProfileModal.tsx
-│   ├── FeedTabs.tsx
-│   ├── PostActions.tsx
-│   ├── PostCard.tsx
-│   ├── PostComposerInline.tsx
-│   ├── PostComposerModal.tsx
-│   ├── ProfileHeader.tsx
-│   ├── ProfileTabs.tsx
-│   ├── Sidebar.tsx
-│   └── UserMenu.tsx
-├── lib/
-│   ├── auth.ts                     # NextAuth configuration
-│   ├── db.ts                       # MongoDB connection
-│   ├── pusher.ts                   # Pusher configuration
-│   ├── utils.ts                    # Utility functions
-│   └── validators.ts               # Input validation
-├── types/
-│   └── next-auth.d.ts
-├── middleware.ts                   # Route protection
-├── .env.example
-├── .gitignore
-├── next.config.js
-├── package.json
-├── postcss.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── README.md
-```
-
-## 🗄️ Database Schema
-
-### Collections
-
-#### `users`
-```typescript
-{
-  _id: ObjectId,
-  userID: string,              // Unique, 3-15 chars
-  provider: 'google' | 'github',
-  providerId: string,
-  name: string,
-  displayName?: string,
-  avatarUrl?: string,
-  bannerUrl?: string,
-  bio?: string,
-  followersCount: number,
-  followingCount: number,
-  createdAt: Date,
-  updatedAt: Date
-}
-// Indexes: userID (unique), provider+providerId (unique)
-```
-
-#### `posts`
-```typescript
-{
-  _id: ObjectId,
-  authorId: ObjectId,
-  text: string,
-  urls: string[],
-  hashtags: string[],
-  mentions: ObjectId[],
-  parentId?: ObjectId,          // For replies
-  isRepost?: boolean,
-  repostOf?: ObjectId,
-  likesCount: number,
-  repliesCount: number,
-  repostsCount: number,
-  createdAt: Date,
-  updatedAt: Date
-}
-// Indexes: authorId+createdAt (desc), parentId
-```
-
-#### `likes`
-```typescript
-{
-  _id: ObjectId,
-  userId: ObjectId,
-  postId: ObjectId,
-  createdAt: Date
-}
-// Indexes: userId+postId (unique), postId
-```
-
-#### `follows`
-```typescript
-{
-  _id: ObjectId,
-  followerId: ObjectId,
-  followeeId: ObjectId,
-  createdAt: Date
-}
-// Indexes: followerId+followeeId (unique), followerId, followeeId
-```
-
-#### `drafts`
-```typescript
-{
-  _id: ObjectId,
-  authorId: ObjectId,
-  text: string,
-  urls: string[],
-  hashtags: string[],
-  mentions: ObjectId[],
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-## 🚀 Deployment to Vercel - Complete Step-by-Step Guide
-
-This guide will walk you through deploying ChirpNest to Vercel from start to finish.
-
-### Prerequisites
-
-Before you begin, make sure you have:
-- ✅ All environment variables ready (from your `.env` file)
-- ✅ A GitHub account
-- ✅ A Vercel account (sign up at [vercel.com](https://vercel.com) if you don't have one)
-- ✅ All third-party services configured (MongoDB, Pusher, Cloudinary, OAuth apps)
+將輸出結果複製到 `.env` 文件的 `NEXTAUTH_SECRET`。
 
 ---
 
-### Step 1: Prepare Your Code
+## 🔧 第三方服務設定
 
-#### 1.1. Ensure `.gitignore` is Set Up
+### 1. MongoDB Atlas 設定
 
-Make sure your `.gitignore` file includes:
-```
-.env
-.env.local
-.env*.local
-node_modules
-.next
-.vercel
-```
+1. 前往 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. 創建免費集群
+3. 創建資料庫用戶（記住用戶名和密碼）
+4. **網路存取設定：**
+   - 前往 **Security** → **Network Access**
+   - 點擊 **Add IP Address**
+   - 選擇 **Allow Access from Anywhere** 或輸入 `0.0.0.0/0`
+   - 點擊 **Confirm**
+5. 獲取連接字串：
+   - 點擊 **Connect** → **Connect your application**
+   - 複製連接字串
+   - 替換 `<password>` 為您的資料庫密碼
+   - 將連接字串放入 `.env` 的 `MONGODB_URI`
 
-#### 1.2. Verify Your Project Structure
+### 2. Google OAuth 設定
 
-Your project should be in the `My Hw5` directory with:
-- `package.json`
-- `next.config.js`
-- `tsconfig.json`
-- `tailwind.config.js`
-- All source files in `app/`, `components/`, `lib/`, etc.
+1. 前往 [Google Cloud Console](https://console.cloud.google.com/)
+2. 創建新專案或選擇現有專案
+3. 啟用 **Google+ API**
+4. 前往 **APIs & Services** → **Credentials**
+5. 點擊 **Create Credentials** → **OAuth client ID**
+6. 選擇 **Web application**
+7. **已授權的重新導向 URI：**
+   - 本地開發：`http://localhost:3000/api/auth/callback/google`
+   - **生產環境：** `https://YOUR_DEPLOYED_URL.vercel.app/api/auth/callback/google`
+   - ⚠️ **重要：** 部署後必須添加您的 Vercel URL！
+8. 複製 **Client ID** 和 **Client Secret** 到 `.env`
+
+### 3. GitHub OAuth 設定
+
+1. 前往 [GitHub Developer Settings](https://github.com/settings/developers)
+2. 點擊 **New OAuth App**
+3. **應用程式名稱：** ChirpNest（或您喜歡的名稱）
+4. **Homepage URL：** `http://localhost:3000`（本地）或您的部署 URL
+5. **Authorization callback URL：**
+   - 本地開發：`http://localhost:3000/api/auth/callback/github`
+   - **生產環境：** `https://YOUR_DEPLOYED_URL.vercel.app/api/auth/callback/github`
+   - ⚠️ **重要：** 部署後必須添加您的 Vercel URL！
+6. 點擊 **Register application**
+7. 複製 **Client ID** 和 **Client Secret** 到 `.env`
+
+### 4. Pusher 設定
+
+1. 前往 [Pusher](https://pusher.com/)
+2. 創建免費帳號
+3. 創建新 Channels 應用
+4. 選擇最近的集群（例如：`ap3` 用於亞太地區）
+5. 複製以下資訊到 `.env`：
+   - App ID → `PUSHER_APP_ID`
+   - Key → `PUSHER_KEY`
+   - Secret → `PUSHER_SECRET`
+   - Cluster → `PUSHER_CLUSTER`
+
+### 5. Cloudinary 設定
+
+1. 前往 [Cloudinary](https://cloudinary.com/)
+2. 創建免費帳號
+3. 前往 **Dashboard**
+4. 複製以下資訊到 `.env`：
+   - Cloud name → `CLOUDINARY_CLOUD_NAME`
+   - API Key → `CLOUDINARY_API_KEY`
+   - API Secret → `CLOUDINARY_API_SECRET`
 
 ---
 
-### Step 2: Push to GitHub
+## 🚀 本地執行
 
-#### 2.1. Initialize Git Repository (if not already done)
-
-Open your terminal in the `My Hw5` directory:
+### 開發模式
 
 ```bash
-cd "My Hw5"
-git init
-```
-
-#### 2.2. Create `.gitignore` (if it doesn't exist)
-
-```bash
-# If .gitignore doesn't exist, create it
-cat > .gitignore << EOF
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
-
-# Testing
-/coverage
-
-# Next.js
-/.next/
-/out/
-
-# Production
-/build
-
-# Misc
-.DS_Store
-*.pem
-
-# Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Local env files
-.env
-.env*.local
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Vercel
-.vercel
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-EOF
-```
-
-#### 2.3. Stage and Commit Files
-
-```bash
-git add .
-git commit -m "Initial commit: ChirpNest social media platform"
-```
-
-#### 2.4. Create GitHub Repository
-
-1. Go to [GitHub](https://github.com/new)
-2. Create a new repository:
-   - **Repository name:** `chirpnest` (or your preferred name)
-   - **Visibility:** Public or Private (your choice)
-   - **DO NOT** initialize with README, .gitignore, or license
-3. Click **Create repository**
-
-#### 2.5. Push to GitHub
-
-```bash
-# Replace YOUR_USERNAME and YOUR_REPO_NAME with your actual values
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-git branch -M main
-git push -u origin main
-```
-
-**Example:**
-```bash
-git remote add origin https://github.com/johndoe/chirpnest.git
-git branch -M main
-git push -u origin main
-```
-
----
-
-### Step 3: Deploy to Vercel
-
-#### 3.1. Sign In to Vercel
-
-1. Go to [vercel.com](https://vercel.com)
-2. Click **Sign Up** or **Log In**
-3. Sign in with GitHub (recommended for easy integration)
-
-#### 3.2. Import Your Project
-
-1. Click **Add New...** → **Project**
-2. You'll see a list of your GitHub repositories
-3. Find your `chirpnest` repository and click **Import**
-
-#### 3.3. Configure Project Settings
-
-1. **Project Name:** `chirpnest` (or your preferred name)
-2. **Framework Preset:** Next.js (should be auto-detected)
-3. **Root Directory:** 
-   - If your repo only contains `My Hw5`, leave it as `./`
-   - If your repo contains multiple projects, set it to `My Hw5`
-4. **Build Command:** Leave default (`npm run build`)
-5. **Output Directory:** Leave default (`.next`)
-6. **Install Command:** Leave default (`npm install`)
-
-#### 3.4. Add Environment Variables
-
-**⚠️ IMPORTANT:** Add ALL environment variables before deploying!
-
-Click **Environment Variables** and add each variable one by one:
-
-**1. NextAuth Configuration:**
-```
-NEXTAUTH_URL = https://YOUR_PROJECT_NAME.vercel.app
-NEXTAUTH_SECRET = your_generated_secret_here
-```
-
-**2. Registration Key:**
-```
-REG_KEY = chirpnest2024
-```
-
-**3. Google OAuth:**
-```
-GOOGLE_CLIENT_ID = your_google_client_id
-GOOGLE_CLIENT_SECRET = your_google_client_secret
-```
-
-**4. GitHub OAuth:**
-```
-GITHUB_ID = your_github_client_id
-GITHUB_SECRET = your_github_client_secret
-```
-
-**5. MongoDB Atlas:**
-```
-MONGODB_URI = mongodb+srv://username:password@cluster.mongodb.net/chirpnest?retryWrites=true&w=majority
-```
-
-**6. Pusher Channels:**
-```
-PUSHER_APP_ID = your_pusher_app_id
-PUSHER_KEY = your_pusher_key
-PUSHER_SECRET = your_pusher_secret
-PUSHER_CLUSTER = ap3
-```
-
-**7. Cloudinary:**
-```
-CLOUDINARY_CLOUD_NAME = your_cloud_name
-CLOUDINARY_API_KEY = your_api_key
-CLOUDINARY_API_SECRET = your_api_secret
-```
-
-**💡 Tip:** 
-- For each variable, select **Production**, **Preview**, and **Development** environments
-- Click **Add** after each variable
-- Double-check all values for typos!
-
-#### 3.5. Deploy
-
-1. Click **Deploy** button
-2. Wait for the build to complete (usually 2-5 minutes)
-3. You'll see a success message with your deployment URL
-
-**Your app will be live at:** `https://YOUR_PROJECT_NAME.vercel.app`
-
----
-
-### Step 4: Update OAuth Redirect URIs
-
-After deployment, you **MUST** update your OAuth apps with the new production URLs.
-
-#### 4.1. Update Google OAuth
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Navigate to **APIs & Services** → **Credentials**
-3. Click on your OAuth 2.0 Client ID
-4. Under **Authorized redirect URIs**, add:
-   ```
-   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/google
-   ```
-5. Click **Save**
-
-#### 4.2. Update GitHub OAuth
-
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click on your OAuth App
-3. Under **Authorization callback URL**, add:
-   ```
-   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/github
-   ```
-4. Click **Update application**
-
-**⚠️ Important:** Keep your localhost URLs too! You'll need them for local development.
-
----
-
-### Step 5: Update NEXTAUTH_URL in Vercel
-
-1. Go back to your Vercel project dashboard
-2. Click **Settings** → **Environment Variables**
-3. Find `NEXTAUTH_URL`
-4. Click the **Edit** icon (pencil)
-5. Update the value to your actual Vercel domain:
-   ```
-   https://YOUR_PROJECT_NAME.vercel.app
-   ```
-6. Make sure it's enabled for **Production**, **Preview**, and **Development**
-7. Click **Save**
-
-#### 5.1. Redeploy After Environment Variable Changes
-
-After updating `NEXTAUTH_URL`, you need to redeploy:
-
-1. Go to **Deployments** tab
-2. Click the **⋯** (three dots) on the latest deployment
-3. Click **Redeploy**
-4. Wait for the deployment to complete
-
----
-
-### Step 6: Verify Deployment
-
-#### 6.1. Test Your Live App
-
-1. Visit `https://YOUR_PROJECT_NAME.vercel.app`
-2. You should see the login page
-3. Try registering a new account:
-   - Enter a UserID
-   - Enter registration key: `chirpnest2024`
-   - Choose Google or GitHub
-   - Complete OAuth
-4. Verify you can:
-   - ✅ Create posts
-   - ✅ Upload images
-   - ✅ Embed YouTube videos
-   - ✅ Use emoji reactions
-   - ✅ Follow users
-   - ✅ See real-time updates
-
-#### 6.2. Check for Errors
-
-1. In Vercel dashboard, go to **Deployments**
-2. Click on your deployment
-3. Check the **Logs** tab for any errors
-4. Check the **Functions** tab for API route errors
-
----
-
-### Step 7: Custom Domain (Optional)
-
-If you want to use a custom domain:
-
-1. Go to **Settings** → **Domains**
-2. Enter your domain name
-3. Follow Vercel's instructions to configure DNS
-4. Update `NEXTAUTH_URL` to your custom domain
-5. Update OAuth redirect URIs to your custom domain
-6. Redeploy
-
----
-
-### Step 8: Continuous Deployment
-
-Vercel automatically deploys when you push to GitHub:
-
-1. Make changes to your code locally
-2. Commit and push:
-   ```bash
-   git add .
-   git commit -m "Your commit message"
-   git push origin main
-   ```
-3. Vercel will automatically:
-   - Detect the push
-   - Build your project
-   - Deploy to production
-   - Create a preview deployment for pull requests
-
----
-
-### Troubleshooting Deployment Issues
-
-#### Issue: Build Fails
-
-**Check:**
-- ✅ All environment variables are set correctly
-- ✅ No syntax errors in your code
-- ✅ All dependencies are in `package.json`
-- ✅ Check build logs in Vercel dashboard
-
-**Solution:**
-```bash
-# Test build locally first
-npm run build
-```
-
-#### Issue: OAuth Not Working
-
-**Check:**
-- ✅ Redirect URIs are updated in Google/GitHub
-- ✅ `NEXTAUTH_URL` matches your Vercel domain exactly
-- ✅ OAuth credentials are correct in Vercel environment variables
-
-**Solution:**
-1. Double-check redirect URIs (must match exactly)
-2. Verify `NEXTAUTH_URL` in Vercel
-3. Redeploy after making changes
-
-#### Issue: MongoDB Connection Error
-
-**Check:**
-- ✅ `MONGODB_URI` is correct in Vercel
-- ✅ MongoDB Atlas Network Access allows all IPs (`0.0.0.0/0`)
-- ✅ Database user has correct permissions
-
-**Solution:**
-1. Verify MongoDB connection string
-2. Check MongoDB Atlas Network Access settings
-3. Test connection string locally
-
-#### Issue: Pusher Not Working
-
-**Check:**
-- ✅ All Pusher environment variables are set
-- ✅ `PUSHER_CLUSTER` matches your Pusher app cluster
-- ✅ Pusher app is active
-
-**Solution:**
-1. Verify Pusher credentials in Vercel
-2. Check Pusher dashboard for app status
-3. Test with Pusher debug console
-
-#### Issue: Images Not Uploading
-
-**Check:**
-- ✅ Cloudinary credentials are correct
-- ✅ Cloudinary account is active
-- ✅ API keys have correct permissions
-
-**Solution:**
-1. Verify Cloudinary credentials
-2. Test upload locally first
-3. Check Cloudinary dashboard for usage limits
-
----
-
-### Post-Deployment Checklist
-
-After deployment, verify:
-
-- [ ] App loads at Vercel URL
-- [ ] Login page displays correctly
-- [ ] Registration works with registration key
-- [ ] Google OAuth works
-- [ ] GitHub OAuth works
-- [ ] Can create posts
-- [ ] Can upload images
-- [ ] YouTube videos embed correctly
-- [ ] Emoji reactions work
-- [ ] Real-time updates work (Pusher)
-- [ ] Search functionality works
-- [ ] Dark mode works
-- [ ] All pages load correctly
-- [ ] No console errors in browser
-
----
-
-### Updating Your README
-
-After deployment, update your README:
-
-1. Replace `[YOUR_VERCEL_URL_HERE]` with your actual Vercel URL
-2. Update the registration key if you changed it
-3. Add any additional deployment notes
-
----
-
-### Quick Reference: Environment Variables Checklist
-
-Copy this checklist and check off each variable as you add it:
-
-```
-☐ NEXTAUTH_URL
-☐ NEXTAUTH_SECRET
-☐ REG_KEY
-☐ GOOGLE_CLIENT_ID
-☐ GOOGLE_CLIENT_SECRET
-☐ GITHUB_ID
-☐ GITHUB_SECRET
-☐ MONGODB_URI
-☐ PUSHER_APP_ID
-☐ PUSHER_KEY
-☐ PUSHER_SECRET
-☐ PUSHER_CLUSTER
-☐ CLOUDINARY_CLOUD_NAME
-☐ CLOUDINARY_API_KEY
-☐ CLOUDINARY_API_SECRET
-```
-
----
-
-### Need Help?
-
-If you encounter issues:
-
-1. **Check Vercel Logs:** Go to your deployment → **Logs** tab
-2. **Check Browser Console:** Open DevTools (F12) → Console tab
-3. **Test Locally:** Make sure everything works locally first
-4. **Vercel Documentation:** [vercel.com/docs](https://vercel.com/docs)
-
----
-
-**🎉 Congratulations!** Your ChirpNest app is now live on Vercel!
-
-## 📝 Usage Guide
-
-### Quick Start Guide
-
-#### Step 1: Start the Development Server
-
-```bash
-cd "My Hw5"
-npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+訪問 [http://localhost:3000](http://localhost:3000)
 
-#### Step 2: Register Your First Account
+### 生產模式
 
-1. **Click "Register here"** on the login page
-2. **Enter a UserID:**
-   - Example: `test_user`, `john_doe`, `reviewer_123`
-   - Must be 3-15 characters, lowercase, numbers, underscores only
-3. **Enter the Registration Key:**
-   - Key: `chirpnest2024`
-   - You can find this in the README (see "Registration Key" section above)
-4. **Choose a provider:**
-   - Click either "Register with Google" or "Register with GitHub"
-   - This will permanently bind your UserID to that provider
-5. **Complete OAuth:**
-   - You'll be redirected to Google/GitHub
-   - Authorize the application
-   - You'll be redirected back and logged in automatically
-
-#### Step 3: Explore the App
-
-Once logged in, you can:
-- **Create posts:** Click the "Post" button in the sidebar or use the composer on the home page
-- **Upload images:** Click the 🖼️ icon (up to 4 images per post)
-- **Interact with posts:** Like (with emoji reactions), reply, repost, bookmark
-- **Follow users:** Visit profiles and click "Follow"
-- **Edit your profile:** Click "Edit Profile" on your own profile page
-- **Search:** Use the search bar at the top of the home page
-- **View notifications:** Click the 🔔 icon in the sidebar
-- **Bookmark posts:** Click the bookmark icon on any post
-
-#### Step 4: Login Later
-
-1. Enter your UserID on the login page
-2. Click "Login"
-3. The system automatically detects your provider and redirects you
-4. Complete OAuth authentication
-5. You're logged in!
-
-### For Reviewers
-
-**To create a test account:**
-
-1. Visit the deployed link or http://localhost:3000
-2. Click **"Register here"**
-3. Enter a unique `userID` (e.g., `reviewer_123`)
-4. Enter the registration key: `chirpnest2024`
-5. Choose **Google** or **GitHub** to bind with this userID
-6. Complete OAuth authorization
-7. Your account is created! Start exploring.
-
-**To login later:**
-
-1. Enter your `userID` on the login page
-2. Click **Login**
-3. System automatically redirects to your bound provider (Google/GitHub)
-4. Complete OAuth
-5. Logged in!
-
-**Important:** 
-- Each UserID can only be used with ONE provider
-- If you registered with Google, you must always login with Google
-- If someone else tries to use your UserID with a different provider, they will be denied
-
-### Creating Posts
-
-- **Home page:** Use the inline composer at the top
-- **Sidebar:** Click the "Post" button to open a modal
-- Posts support:
-  - Plain text
-  - URLs (auto-linked, count as 23 chars each)
-  - **YouTube videos:** Paste a YouTube URL (e.g., `https://www.youtube.com/watch?v=VIDEO_ID` or `https://youtu.be/VIDEO_ID`) and it will automatically be embedded as a video player
-  - Hashtags (e.g., `#nextjs` - colored, don't count toward limit)
-  - Mentions (e.g., `@username` - linked, don't count toward limit)
-  - Images (upload up to 4 images via Cloudinary)
-
-**YouTube Video Examples:**
-- `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
-- `https://youtu.be/dQw4w9WgXcQ`
-- `https://m.youtube.com/watch?v=dQw4w9WgXcQ`
-
-The video will automatically be detected and displayed as an embedded player in the post!
-
-### Testing Real-time Updates
-
-1. Open the app in two different browsers (or incognito + normal)
-2. Log in with two different accounts
-3. In browser A, like or reply to a post
-4. In browser B, watch the counters update in real-time without refreshing
-
-## 🐛 Troubleshooting
-
-### OAuth Login Fails
-
-- **Error:** "Redirect URI mismatch"
-  - **Solution:** Check that your OAuth app's redirect URI exactly matches `http://localhost:3000/api/auth/callback/<provider>` for local or your Vercel domain for production
-
-### MongoDB Connection Error
-
-- **Error:** "MongoServerError: bad auth"
-  - **Solution:** Check your MongoDB username/password in the connection string
-- **Error:** "Connection timeout"
-  - **Solution:** Add `0.0.0.0/0` to Network Access in MongoDB Atlas
-
-### Pusher Not Working
-
-- **Error:** Real-time updates not appearing
-  - **Solution:** Verify `PUSHER_KEY`, `PUSHER_SECRET`, `PUSHER_APP_ID`, and `PUSHER_CLUSTER` are correct
-  - Check Pusher Debug Console for events
-
-### UserID Already Taken
-
-- **Solution:** Choose a different userID during registration
-
-### Build Errors on Vercel
-
-- **Error:** Missing environment variables
-  - **Solution:** Add all required env vars in Vercel project settings
-- **Error:** Module not found
-  - **Solution:** Make sure all dependencies are in `package.json`
-
-## 🧪 Testing Accounts
-
-For testing, create at least two accounts with different providers:
-
-1. **Account 1:** Use Google OAuth (e.g., `user_google`)
-2. **Account 2:** Use GitHub OAuth (e.g., `user_github`)
-
-Then test:
-- ✅ Follow/unfollow
-- ✅ Like/unlike posts
-- ✅ Reply to posts
-- ✅ Repost
-- ✅ Real-time counter updates
-- ✅ Edit profile
-- ✅ Draft saving
-
-## 📄 License
-
-This project is created for educational purposes as part of a web programming assignment.
-
-## 👤 Author
-
-**Your Name Here**
-
-- GitHub: [@yourusername](https://github.com/yourusername)
+```bash
+npm run build
+npm start
+```
 
 ---
 
-**Note:** Remember to update the **Deployed Link** and **Registration Key** sections after deployment!
+## 🌐 部署到 Vercel
 
-"# chirpnest" 
+### 步驟 1：推送到 GitHub
+
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
+
+### 步驟 2：在 Vercel 部署
+
+1. 前往 [Vercel](https://vercel.com/)
+2. 點擊 **Add New...** → **Project**
+3. 從 GitHub 導入您的倉庫
+4. **設定專案：**
+   - Framework Preset: Next.js
+   - Root Directory: `wp1141/hw5`（如果專案在子目錄中）
+5. **添加環境變數：**
+   - 將所有 `.env` 中的變數添加到 Vercel
+   - **重要：** `NEXTAUTH_URL` 必須設為您的 Vercel 域名：
+     ```
+     NEXTAUTH_URL=https://YOUR_PROJECT_NAME.vercel.app
+     ```
+6. 點擊 **Deploy**
+
+### 步驟 3：更新 OAuth 重新導向 URI ⚠️ 必須執行！
+
+部署完成後，**必須**更新 OAuth 設定：
+
+#### Google OAuth：
+1. 前往 [Google Cloud Console](https://console.cloud.google.com/)
+2. **APIs & Services** → **Credentials**
+3. 點擊您的 OAuth 2.0 Client ID
+4. 在 **已授權的重新導向 URI** 中添加：
+   ```
+   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/google
+   ```
+5. 點擊 **儲存**
+
+#### GitHub OAuth：
+1. 前往 [GitHub Developer Settings](https://github.com/settings/developers)
+2. 點擊您的 OAuth App
+3. 在 **Authorization callback URL** 中添加：
+   ```
+   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/github
+   ```
+4. 點擊 **Update application**
+
+> ⚠️ **重要：** 如果不執行此步驟，OAuth 登入會失敗並顯示 `redirect_uri_mismatch` 錯誤！
+
+### 步驟 4：重新部署
+
+更新 OAuth 設定後，在 Vercel 中重新部署：
+1. Vercel → **Deployments**
+2. 點擊 **⋯** → **Redeploy**
+
+---
+
+## 🔍 詳細故障排除指南
+
+### ⚠️ 問題 1：OAuth 登入失敗 - `redirect_uri_mismatch`（最常見）
+
+**錯誤訊息：**
+```
+已封鎖存取權：「ChirpNest」的要求無效
+發生錯誤 400： redirect_uri_mismatch
+```
+
+**原因：** OAuth 重新導向 URI 與實際 URL 不匹配
+
+**完整解決步驟：**
+
+#### 步驟 A：檢查 Google OAuth 設定
+
+1. 前往 [Google Cloud Console](https://console.cloud.google.com/)
+2. **APIs & Services** → **Credentials**
+3. 點擊您的 OAuth 2.0 Client ID
+4. 檢查 **已授權的重新導向 URI** 列表
+5. **必須包含：**
+   ```
+   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/google
+   ```
+6. **確認事項：**
+   - ✅ 使用 `https://`（不是 `http://`）
+   - ✅ 沒有尾隨斜杠（`/`）
+   - ✅ 完全匹配您的 Vercel 域名
+   - ❌ 刪除所有不必要的 URI（只保留必要的）
+7. 點擊 **儲存**
+8. **等待 5-10 分鐘**讓設定生效
+
+#### 步驟 B：檢查 GitHub OAuth 設定
+
+1. 前往 [GitHub Developer Settings](https://github.com/settings/developers)
+2. 點擊您的 OAuth App
+3. 檢查 **Authorization callback URL**
+4. **必須包含：**
+   ```
+   https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/github
+   ```
+5. **確認事項：**
+   - ✅ 使用 `https://`（不是 `http://`）
+   - ✅ 沒有尾隨斜杠
+   - ✅ 完全匹配您的 Vercel 域名
+6. 點擊 **Update application**
+7. **等待 5-10 分鐘**讓設定生效
+
+#### 步驟 C：檢查 Vercel 環境變數
+
+1. Vercel Dashboard → 您的專案 → **Settings** → **Environment Variables**
+2. 查找 `NEXTAUTH_URL`
+3. **值必須是：**
+   ```
+   https://YOUR_PROJECT_NAME.vercel.app
+   ```
+4. **確認事項：**
+   - ✅ 沒有尾隨斜杠
+   - ✅ 使用 `https://`
+   - ✅ 完全匹配您的實際 Vercel 域名
+5. 如果值不正確，更新並**重新部署**
+
+#### 步驟 D：重新部署
+
+1. Vercel → **Deployments**
+2. 點擊 **⋯** → **Redeploy**
+3. 等待部署完成
+
+#### 步驟 E：清除緩存並測試
+
+1. 清除瀏覽器緩存或使用無痕模式
+2. 訪問您的網站
+3. 嘗試登入
+
+**正確格式範例：**
+```
+✅ https://chirpnest.vercel.app/api/auth/callback/google
+✅ https://chirpnest.vercel.app/api/auth/callback/github
+✅ NEXTAUTH_URL=https://chirpnest.vercel.app
+
+❌ http://chirpnest.vercel.app/api/auth/callback/google
+❌ https://chirpnest.vercel.app/api/auth/callback/google/
+❌ NEXTAUTH_URL=https://chirpnest.vercel.app/
+```
+
+### ⚠️ 問題 2：資料庫連接失敗 - 500 錯誤
+
+**錯誤訊息：**
+```
+Internal server error
+Database connection not configured
+```
+
+**完整解決步驟：**
+
+#### 步驟 A：檢查 MongoDB Atlas Network Access
+
+1. 前往 [MongoDB Atlas](https://cloud.mongodb.com/)
+2. **Security** → **Network Access**
+3. 確認有條目顯示 `0.0.0.0/0`（允許所有 IP）
+4. 如果沒有，點擊 **Add IP Address**：
+   - 選擇 **Allow Access from Anywhere**
+   - 或手動輸入：`0.0.0.0/0`
+   - 點擊 **Confirm**
+5. **等待 1-2 分鐘**讓設定生效
+
+#### 步驟 B：檢查 MongoDB 連接字串
+
+1. MongoDB Atlas → **Database** → **Connect**
+2. 選擇 **Connect your application**
+3. 複製連接字串
+4. 格式應為：
+   ```
+   mongodb+srv://username:password@cluster.mongodb.net/chirpnest?retryWrites=true&w=majority
+   ```
+5. **重要：**
+   - 將 `<password>` 替換為您的實際密碼
+   - 如果密碼包含特殊字符，需要 URL 編碼：
+     - `@` → `%40`
+     - `#` → `%23`
+     - `$` → `%24`
+     - `%` → `%25`
+     - `&` → `%26`
+     - `+` → `%2B`
+     - `=` → `%3D`
+
+#### 步驟 C：檢查 Vercel 環境變數
+
+1. Vercel → **Settings** → **Environment Variables**
+2. 確認 `MONGODB_URI` 存在且值正確
+3. 確認沒有多餘的空格或引號
+4. 更新後**重新部署**
+
+#### 步驟 D：驗證資料庫用戶權限
+
+1. MongoDB Atlas → **Security** → **Database Access**
+2. 確認您的用戶有 **Read and write** 權限
+3. 如果沒有，編輯用戶並添加權限
+
+### ⚠️ 問題 3：圖片上傳失敗
+
+**錯誤訊息：**
+```
+Failed to upload image
+Cloudinary error
+```
+
+**完整解決步驟：**
+
+1. **檢查 Cloudinary 環境變數：**
+   - Vercel → **Settings** → **Environment Variables**
+   - 確認以下三個變數都存在：
+     - `CLOUDINARY_CLOUD_NAME`
+     - `CLOUDINARY_API_KEY`
+     - `CLOUDINARY_API_SECRET`
+   - 確認值正確（從 Cloudinary Dashboard 複製）
+
+2. **檢查 Cloudinary 帳號狀態：**
+   - 前往 [Cloudinary Dashboard](https://cloudinary.com/console)
+   - 確認帳號處於活動狀態
+   - 檢查使用限制（免費帳號有使用限制）
+
+3. **驗證 API 憑證：**
+   - Cloudinary Dashboard → **Settings** → **Security**
+   - 確認 API Key 和 Secret 正確
+   - 如果重新生成過，必須更新 Vercel 中的值
+
+4. **重新部署：**
+   - 更新環境變數後，在 Vercel 中重新部署
+
+### ⚠️ 問題 4：即時更新不工作
+
+**症狀：** 按讚、回覆、轉發後，其他用戶看不到即時更新
+
+**完整解決步驟：**
+
+1. **檢查 Pusher 環境變數：**
+   - Vercel → **Settings** → **Environment Variables**
+   - 確認以下四個變數都存在：
+     - `PUSHER_APP_ID`
+     - `PUSHER_KEY`
+     - `PUSHER_SECRET`
+     - `PUSHER_CLUSTER`
+   - 確認值正確
+
+2. **檢查 Pusher 集群設定：**
+   - 前往 [Pusher Dashboard](https://dashboard.pusher.com/)
+   - 確認 `PUSHER_CLUSTER` 與您的應用集群匹配
+   - 常見集群：`ap3`（亞太）、`us2`（美國）、`eu`（歐洲）
+
+3. **檢查 Pusher 應用狀態：**
+   - Pusher Dashboard → 您的應用
+   - 確認應用處於 **Active** 狀態
+   - 檢查使用限制
+
+4. **檢查瀏覽器控制台：**
+   - 按 F12 → **Console**
+   - 查看是否有 Pusher 連接錯誤
+   - 確認 `NEXT_PUBLIC_PUSHER_KEY` 和 `NEXT_PUBLIC_PUSHER_CLUSTER` 正確設置
+
+### ⚠️ 問題 5：Vercel 構建失敗
+
+**錯誤類型：**
+
+#### A. ESLint 錯誤
+```
+Error: `'` can be escaped with `&apos;`
+```
+
+**解決方案：**
+- 已在 `next.config.js` 中禁用構建時的 ESLint
+- 如果仍有問題，確認 `next.config.js` 包含：
+  ```js
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
+  ```
+
+#### B. 環境變數缺失
+```
+Error: Please add your MONGODB_URI to .env
+```
+
+**解決方案：**
+1. 確認所有 15 個環境變數都在 Vercel 中設置
+2. 確認變數名稱完全匹配（大小寫敏感）
+3. 確認值正確（無多餘空格）
+
+#### C. TypeScript 錯誤
+```
+Type error: ...
+```
+
+**解決方案：**
+1. 本地運行 `npm run build` 檢查錯誤
+2. 修復所有 TypeScript 錯誤
+3. 確認所有類型定義正確
+
+#### D. 依賴安裝失敗
+```
+npm ERR! ...
+```
+
+**解決方案：**
+1. 確認 `package.json` 中的依賴版本正確
+2. 嘗試刪除 `package-lock.json` 並重新安裝
+3. 檢查 Node.js 版本（需要 18+）
+
+---
+
+## 📝 使用指南
+
+### 註冊新帳號
+
+1. 訪問登入頁面
+2. 點擊 **「註冊」**
+3. 輸入 UserID（3-15 個字符，小寫字母、數字、底線）
+4. 輸入註冊金鑰：`chirpnest2024`
+5. 選擇 OAuth 提供者（Google 或 GitHub）
+6. 完成 OAuth 認證
+7. 完成！
+
+### 登入
+
+1. 輸入您的 UserID
+2. 點擊 **「登入」**
+3. 系統會自動識別您使用的 OAuth 提供者
+4. 完成 OAuth 認證
+5. 完成！
+
+### 發文
+
+1. 點擊側邊欄的 **「Post」** 按鈕
+2. 輸入內容（最多 280 字元）
+3. 可選：上傳圖片（最多 4 張）
+4. 可選：貼上 YouTube 連結（會自動嵌入為影片）
+5. 點擊 **「Post」**
+
+### 互動功能
+
+- **表情反應：** 將滑鼠懸停在按讚按鈕上，選擇表情符號
+- **回覆：** 點擊回覆按鈕，輸入回覆內容
+- **轉發：** 點擊轉發按鈕
+- **書籤：** 點擊書籤圖標保存發文
+
+---
+
+## 🗂️ 專案結構
+
+```
+wp1141/hw5/
+├── app/
+│   ├── (auth)/          # 認證相關頁面
+│   │   └── login/
+│   ├── (main)/          # 主要功能頁面
+│   │   ├── home/        # 首頁動態
+│   │   ├── profile/     # 個人資料
+│   │   ├── post/        # 發文詳情
+│   │   ├── bookmarks/   # 書籤
+│   │   └── notifications/ # 通知
+│   └── api/             # API 路由
+│       ├── auth/        # 認證 API
+│       ├── posts/       # 發文 API
+│       ├── users/       # 用戶 API
+│       └── ...
+├── components/          # React 組件
+├── lib/                 # 工具函數
+│   ├── auth.ts         # NextAuth 設定
+│   ├── db.ts           # MongoDB 連接
+│   ├── pusher.ts       # Pusher 設定
+│   └── validators.ts   # 驗證函數
+├── types/              # TypeScript 類型定義
+├── .env                # 環境變數（不提交到 Git）
+├── .gitignore          # Git 忽略文件
+├── next.config.js      # Next.js 設定
+├── package.json        # 依賴清單
+└── README.md           # 本文件
+```
+
+---
+
+## 🔒 安全性措施
+
+1. **註冊金鑰保護：** 使用 `REG_KEY` 防止任意註冊
+2. **環境變數：** 所有敏感資訊存儲在環境變數中
+3. **OAuth 驗證：** 使用 Google/GitHub OAuth 進行安全認證
+4. **UserID 綁定：** 每個 UserID 只能綁定一個 OAuth 提供者，防止帳號衝突
+5. **輸入驗證：** 所有用戶輸入都經過驗證和清理
+
+---
+
+## 📚 技術棧
+
+- **前端：** Next.js 14, React 18, TypeScript, TailwindCSS
+- **認證：** NextAuth.js
+- **資料庫：** MongoDB Atlas
+- **即時通訊：** Pusher Channels
+- **圖片上傳：** Cloudinary
+- **部署：** Vercel
+
+---
+
+## 🐛 已知問題與限制
+
+- ESLint 在構建時被禁用（見 `next.config.js`）
+- MongoDB 連接使用延遲初始化以避免構建時錯誤
+- Pusher 使用延遲初始化以避免環境變數缺失時崩潰
+
+---
+
+## 📞 支援與常見問題
+
+### 快速檢查清單
+
+在尋求幫助之前，請確認：
+
+- [ ] 所有 15 個環境變數都在 Vercel 中設置
+- [ ] `NEXTAUTH_URL` = 您的實際 Vercel 域名（無尾隨斜杠）
+- [ ] Google OAuth Redirect URI 包含您的 Vercel URL
+- [ ] GitHub OAuth Callback URL 包含您的 Vercel URL
+- [ ] MongoDB Network Access 允許 `0.0.0.0/0`
+- [ ] 所有 OAuth 設定更改後已等待 5-10 分鐘
+- [ ] 更新環境變數後已重新部署 Vercel
+- [ ] 已清除瀏覽器緩存或使用無痕模式測試
+
+### 如何查看錯誤日誌
+
+#### Vercel 日誌：
+1. Vercel Dashboard → **Deployments**
+2. 點擊最新的部署
+3. 查看 **Logs** 標籤
+4. 查看 **Functions** 標籤（API 路由錯誤）
+
+#### 瀏覽器控制台：
+1. 按 F12 打開開發者工具
+2. 查看 **Console** 標籤
+3. 查看 **Network** 標籤（API 請求錯誤）
+
+### 如果仍然無法解決
+
+請提供以下資訊：
+
+1. **錯誤訊息**（完整文字）
+2. **Vercel 部署日誌**（截圖或複製文字）
+3. **瀏覽器控制台錯誤**（F12 → Console）
+4. **環境變數檢查清單**（確認哪些已設置）
+5. **OAuth 設定截圖**（Google 和 GitHub 的 Redirect URI 列表）
+
+---
+
+## ⚠️ 重要提醒：部署後必須執行的步驟
+
+### 1. 更新 OAuth 重新導向 URI（必須！）
+
+部署到 Vercel 後，**必須**在以下位置添加您的 Vercel URL：
+
+#### Google OAuth：
+```
+https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/google
+```
+
+#### GitHub OAuth：
+```
+https://YOUR_PROJECT_NAME.vercel.app/api/auth/callback/github
+```
+
+**如果不執行此步驟，OAuth 登入會失敗！**
+
+### 2. 更新 Vercel 環境變數
+
+將 `NEXTAUTH_URL` 更新為您的實際 Vercel 域名：
+```
+NEXTAUTH_URL=https://YOUR_PROJECT_NAME.vercel.app
+```
+
+### 3. 重新部署
+
+完成上述步驟後，在 Vercel 中重新部署專案。
+
+---
+
+## 📄 授權
+
+本專案僅供學習使用。
+
+---
+
+## 👤 作者
+
+- **UserID：** vinlee1030
+- **GitHub：** [vinlee1030](https://github.com/vinlee1030)
+
+---
+
+**祝使用愉快！** 🎉
