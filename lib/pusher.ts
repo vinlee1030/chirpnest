@@ -15,14 +15,38 @@
 import Pusher from 'pusher';
 import PusherClient from 'pusher-js';
 
-// Server-side Pusher instance
-export const pusherServer = new Pusher({
-  appId: process.env.PUSHER_APP_ID!,
-  key: process.env.PUSHER_KEY!,
-  secret: process.env.PUSHER_SECRET!,
-  cluster: process.env.PUSHER_CLUSTER!,
-  useTLS: true,
-});
+// Server-side Pusher instance (lazy initialization)
+let pusherServerInstance: Pusher | null = null;
+
+export const getPusherServer = (): Pusher => {
+  if (!pusherServerInstance) {
+    const appId = process.env.PUSHER_APP_ID;
+    const key = process.env.PUSHER_KEY;
+    const secret = process.env.PUSHER_SECRET;
+    const cluster = process.env.PUSHER_CLUSTER;
+
+    if (!appId || !key || !secret || !cluster) {
+      throw new Error('Missing Pusher environment variables. Please set PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET, and PUSHER_CLUSTER.');
+    }
+
+    pusherServerInstance = new Pusher({
+      appId,
+      key,
+      secret,
+      cluster,
+      useTLS: true,
+    });
+  }
+  return pusherServerInstance;
+};
+
+// For backward compatibility - lazy getter
+export const pusherServer = {
+  trigger: async (channel: string, event: string, data: any) => {
+    const server = getPusherServer();
+    return server.trigger(channel, event, data);
+  },
+} as Pusher;
 
 // Client-side Pusher instance (for browser)
 let pusherClientInstance: PusherClient | null = null;
