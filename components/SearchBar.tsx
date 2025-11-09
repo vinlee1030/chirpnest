@@ -167,7 +167,7 @@ export default function SearchBar() {
           {results.users.length === 0 && results.posts.length === 0 && (
             <div className="p-8 text-center">
               <span className="text-4xl mb-2 block">🔍</span>
-              <p className="text-gray-500 dark:text-gray-400">No results found for "{query}"</p>
+              <p className="text-gray-500 dark:text-gray-400">No results found for &quot;{query}&quot;</p>
             </div>
           )}
         </div>

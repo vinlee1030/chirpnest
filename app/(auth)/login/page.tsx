@@ -154,7 +154,7 @@ export default function LoginPage() {
             </button>
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Don't have an account?</p>
+              <p>Don&apos;t have an account?</p>
               <button
                 onClick={() => {
                   setIsRegistering(true);

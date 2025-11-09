@@ -93,7 +93,7 @@ export default async function NotificationsPage() {
             <span className="text-6xl mb-4 block">🔔</span>
             <h2 className="text-xl font-bold mb-2">No notifications yet</h2>
             <p className="text-gray-500 dark:text-gray-400">
-              When someone likes, replies, or follows you, it'll show up here
+              When someone likes, replies, or follows you, it&apos;ll show up here
             </p>
           </div>
         ) : (
