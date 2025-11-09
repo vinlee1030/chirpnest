@@ -1,6 +1,6 @@
 {
   "name": "chirpnest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Twitter/X-like social media platform built with Next.js",
   "scripts": {
     "dev": "next dev",
